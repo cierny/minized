@@ -32,12 +32,12 @@ else
         xsct -sdx -nodisp build_dts.tcl
         echo "DTS generated in output/dts"
     fi
-fi
 
-# Run buildroot
-# cd buildroot
-# make defconfig BR2_DEFCONFIG=../config/buildroot.cfg BR2_JLEVEL=$cores O=../output/linux
-# cd ../output/linux
-# make BR2_JLEVEL=$cores $@
+    # Run buildroot
+    cd buildroot
+    make defconfig BR2_DEFCONFIG=../config/buildroot.cfg BR2_JLEVEL=$cores O=../output/linux
+    cd ../output/linux
+    make BR2_JLEVEL=$cores $@
+fi
 
 echo "Finished in $((SECONDS/3600))h $(((SECONDS/60)%60))m $((SECONDS%60))s"
