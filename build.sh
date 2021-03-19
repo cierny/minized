@@ -20,12 +20,23 @@ if [ ! -f "output/fpga/minized_sbc_base.xsa" ]; then
     vivado -mode batch -source build_hw_project.tcl -nolog -nojournal -notrace
     echo "Hardware project generated in output/fpga"
 else
-    # Generate DTS if needed
+    # Generate FSBL & DTS if needed
+    fsbl_gen=true
     dts_gen=true
+    if [ -f "output/fsbl/hardware_description.xsa" ]; then
+        if cmp -s -- "output/fpga/minized_sbc_base.xsa" "output/fsbl/hardware_description.xsa"; then
+            fsbl_gen=false
+        fi
+    fi
     if [ -f "output/dts/hardware_description.xsa" ]; then
         if cmp -s -- "output/fpga/minized_sbc_base.xsa" "output/dts/hardware_description.xsa"; then
             dts_gen=false
         fi
+    fi
+    if [ "$fsbl_gen" = true ]; then
+        echo "Generating FSBL..."
+        xsct -sdx -nodisp build_fsbl.tcl
+        echo "FSBL generated in output/fsbl"
     fi
     if [ "$dts_gen" = true ]; then
         echo "Generating DTS..."

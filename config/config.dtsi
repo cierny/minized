@@ -1,4 +1,5 @@
 &qspi {
+        u-boot,dm-spl;
         #address-cells = <1>;
         #size-cells = <0>;
         flash0: flash@0 {
