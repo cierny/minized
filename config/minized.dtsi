@@ -43,11 +43,7 @@
 		};
 		partition@1 {
 			label = "rootfs";
-			reg = <0x340000 0xa00000>;
-		};
-		partition@2 {
-			label = "fpga";
-			reg = <0xd40000 0x2b0000>;
+			reg = <0x340000 0xcb0000>;
 		};
 	};
 };
