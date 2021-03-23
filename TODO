@@ -1,13 +1,7 @@
 QPSI (16 MB) needs:
-    boot partition
-        0x00000000: boot.bin (128 kB)
-        0x00020000: u-boot.img (730 kB)
-
-
     BOOT.bin:
-        Custom U-Boot SPL
-        U-Boot
-        Kernel w DTB (uImage)
+        FSBL
+        Kernel w DTB (zImage.zynq-minized)
     Rootfs (squashfs-lz4)
     FPGA (ubifs)
 eMMC (8 GB):
@@ -15,5 +9,15 @@ eMMC (8 GB):
 
 
 cd "D:/Dropbox (MIT)/PhD/Experimentation/BR2/"
-D:/Xilinx/Vitis/2020.2/bin/program_flash -fsbl executable.elf -offset 0x00000 -f boot.bin -flash_type qspi-x4-single -verify
-D:/Xilinx/Vitis/2020.2/bin/program_flash -fsbl executable.elf -offset 0x20000 -f u-boot.img -flash_type qspi-x4-single -verify
+D:/Xilinx/Vitis/2020.2/bin/program_flash -fsbl executable.elf -offset 0x00000 -f boot.bin -flash_type qspi-x4-single
+D:/Xilinx/Vitis/2020.2/bin/program_flash -fsbl executable.elf -offset 0x340000 -f rootfs.squashfs -flash_type qspi-x4-single
+
+ chosen {
+        bootargs = "console=ttyPS0,115200 earlyprintk clk_ignore_unused root=mtd:jffs2 rw rootfstype=jffs2";
+        stdout-path = "serial0:115200n8";
+    };
+    root=/dev/mtdblock2 rootfstype=jffs2
+
+
+    mtdparts=0:3400956(boot),10403840(rootfs),-(fpga)
+    

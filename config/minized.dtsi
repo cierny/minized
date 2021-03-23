@@ -1,0 +1,122 @@
+/* Adapted from the meta-avnet github repository */
+/ {
+	/* WiFi Module: WL_REG_ON GPIO Control */	
+	wlreg_on: wlreg-on {
+		compatible = "regulator-fixed";
+		regulator-name = "wlreg_on";
+		enable-active-high;
+		gpio = <&gpio0 56 0>;
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		startup-delay-us = <100>;	
+	};
+
+	usb_phy0: usb_phy@0 {
+		compatible = "ulpi-phy";
+		#phy-cells = <0>;
+		reg = <0xe0002000 0x1000>;
+		view-port = <0x0170>;
+		drv-vbus;
+	};
+};
+
+&usb0 {
+	dr_mode = "otg";
+	usb-phy = <&usb_phy0>;
+} ;
+
+/* QSPI configuration */
+&qspi {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	flash0: flash@0 {
+		compatible = "micron,n25q128a13";
+		reg = <0x0>;
+		spi-tx-bus-width = <1>;
+		spi-rx-bus-width = <4>;
+		spi-max-frequency = <50000000>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+		partition@0 {
+			label = "boot";
+			reg = <0x0 0x340000>;
+		};
+		partition@1 {
+			label = "rootfs";
+			reg = <0x340000 0xa00000>;
+		};
+		partition@2 {
+			label = "fpga";
+			reg = <0xd40000 0x2b0000>;
+		};
+	};
+};
+
+/* SD Interface for Wi-Fi Module */
+&sdhci0 {
+	status = "okay"; 
+	bus-width= <4>;
+	xlnx,has-cd = <0x0>;
+	xlnx,has-power = <0x0>;
+	xlnx,has-wp = <0x0>;
+	non-removeable;
+	broken-cd;
+	vmmc-supply = <&wlreg_on>;
+	
+	brcmf: brcmf@1 {
+		status = "okay";
+		reg = <1>; 
+		compatible = "brcm,bcm43430-fmac";
+	}; 
+};
+
+/* SD Interface for eMMC */
+&sdhci1 {
+	status = "okay"; 
+	non-removeable;
+	bus-width= <4>;
+	xlnx,has-cd = <0x0>;
+	xlnx,has-power = <0x0>;
+	xlnx,has-wp = <0x0>;
+
+	mmccard: mmccard@0 {
+		reg = <0>;
+		compatible = "mmc-card";
+		broken-hpi;
+	};
+};
+
+/* Console UART.  UART1 is tied to the USB serial port on the Zedboard */
+&uart1 {
+   	status = "okay";
+	current-speed = <115200>;
+	port-number = <0>;
+};
+
+/* Bluetooth UART.  Goes through EMIO to the 1DX */
+&bluetooth_uart {
+   	status = "okay";
+	current-speed = <115200>;
+	port-number = <2>;
+};
+
+/* AXI IIC.  Interfaces with the ST LIS2DS12 accelerometer */
+&axi_iic_0 {
+	status = "okay";
+
+	/* MiniZed doesn't support interrupts from the accelerometer */
+	accel0: lis2ds12@1d {
+		compatible = "st,lis2ds12";
+		reg = <0x1d>;
+	};
+};
+
+&amba {
+	/delete-node/ ptm@f889d000 ;
+
+	funnel@f8804000 {
+		in-ports {
+			/delete-node/ port@1 ;
+		};
+	};
+};

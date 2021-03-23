@@ -1,0 +1,5 @@
+boot_image : {
+  [bootloader]fsbl.elf
+  fpga.bit
+  [load=0x8800000,startup=0x8800000]zImage.minized
+}
