@@ -46,7 +46,7 @@ else
 
     # Run buildroot
     cd buildroot
-    make defconfig BR2_DEFCONFIG=../config/buildroot.cfg BR2_JLEVEL=$cores O=../output/linux
+    make defconfig BR2_DEFCONFIG=../config/buildroot.cfg BR2_EXTERNAL=../extra BR2_JLEVEL=$cores O=../output/linux
     cd ../output/linux
     make BR2_JLEVEL=$cores $@
 fi

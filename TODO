@@ -8,9 +8,9 @@ eMMC (8 GB):
     /root ext4
 
 
-cd "D:/Dropbox (MIT)/PhD/Experimentation/BR2/"
+cd /d "D:/Dropbox (MIT)/PhD/Experimentation/BR2/"
 D:/Xilinx/Vitis/2020.2/bin/program_flash -fsbl executable.elf -offset 0x00000 -f boot.bin -flash_type qspi-x4-single
-D:/Xilinx/Vitis/2020.2/bin/program_flash -fsbl executable.elf -offset 0x340000 -f rootfs.squashfs -flash_type qspi-x4-single
+D:/Xilinx/Vitis/2020.2/bin/program_flash -fsbl executable.elf -offset 0x4a0000 -f rootfs.squashfs -flash_type qspi-x4-single
 
  chosen {
         bootargs = "console=ttyPS0,115200 earlyprintk clk_ignore_unused root=mtd:jffs2 rw rootfstype=jffs2";

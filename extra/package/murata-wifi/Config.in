@@ -1,0 +1,8 @@
+config BR2_PACKAGE_MURATA_WIFI
+	bool "murata-wifi"
+	help
+	  Murata Wireless firmware, NVRAM and Bluetooth HCD patch files.
+
+	  https://github.com/murata-wireless/cyw-fmac-fw
+	  https://github.com/murata-wireless/cyw-fmac-nvram
+	  https://github.com/murata-wireless/cyw-bt-patch

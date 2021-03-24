@@ -25,7 +25,10 @@ declare -a rm_etc_svc=(
     "systemd-hwdb-update.service"
     "systemd-ask-password-console.path"
     "systemd-machine-id-commit.service"
+    "getty.target.wants/getty@tty1.service"
     "multi-user.target.wants/remote-fs.target"
+    "multi-user.target.wants/rdisc.service"
+    "multi-user.target.wants/ninfod.service"
     "default.target.wants/e2scrub_reap.service"
     "timers.target.wants/e2scrub_all.timer")
 

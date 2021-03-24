@@ -1,0 +1,1 @@
+source "$BR2_EXTERNAL_MINIZED_PATH/package/murata-wifi/Config.in"
