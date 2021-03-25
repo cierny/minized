@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+# Create a fpga image mountpoint
+mkdir -p ${TARGET_DIR}/lib/firmware/fpga
+mkdir -p ${TARGET_DIR}/usr/local/default/fpga
+cp ../output/fpga/image_loadable.bit ${TARGET_DIR}/usr/local/default/fpga/default.bit
+
 # Disable some default systemd services from /lib
 declare -a rm_lib_svc=(
     "sysinit.target.wants/dev-hugepages.mount"

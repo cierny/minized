@@ -41,7 +41,8 @@ define MURATA_WIFI_INSTALL_TARGET_CMDS
 		$(INSTALL) -m 0644 -D $(@D)/$(f) \
 			$(TARGET_DIR)/lib/firmware/brcm/$(call murata-wifi-file-rename,$(f))
 	)
-	ln -sfn brcmfmac43430-sdio.txt $(TARGET_DIR)/lib/firmware/brcm/brcmfmac43430-sdio.xlnx,zynq-7000.txt
+	mv $(TARGET_DIR)/lib/firmware/brcm/brcmfmac43430-sdio.txt \
+		$(TARGET_DIR)/lib/firmware/brcm/brcmfmac43430-sdio.xlnx,zynq-7000.txt
 endef
 
 $(eval $(generic-package))

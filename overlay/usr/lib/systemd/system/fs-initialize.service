@@ -1,0 +1,30 @@
+[Unit]
+Description=Initialize Filesystems
+ConditionPathExists=!/root/.wifi
+After=local-fs-pre.target mnt.mount root.mount
+Before=local-fs.target
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c '\
+systemctl stop root.mount; \
+systemctl stop mnt.mount; \
+umount -fq /root; \
+umount -fq /mnt; \
+echo -e "d \
+o \
+n \
+p \
+1 \
+ \
+ \
+w \
+" | fdisk /dev/mmcblk1; \
+mkfs.ext4 -FFq /dev/mmcblk1p1; \
+systemctl start mnt.mount; \
+mkdir /mnt/tmp /mnt/overlay; \
+systemctl start root.mount;'
+
+[Install]
+WantedBy=local-fs.target

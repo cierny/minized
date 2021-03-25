@@ -43,6 +43,12 @@ else
         xsct -sdx -nodisp build_dts.tcl
         echo "DTS generated in output/dts"
     fi
+    if [[ "$fsbl_gen" = true || "$dts_gen" = true ]]; then
+        echo "Generating loadable FPGA image..."
+        cp output/fsbl/minized_sbc_base.bit output/fpga/image_raw.bit
+        bootgen -w on -image config/bitstream.bif -arch zynq -process_bitstream bin
+        mv output/fpga/image_raw.bit.bin output/fpga/image_loadable.bit 
+    fi
 
     # Run buildroot
     cd buildroot
