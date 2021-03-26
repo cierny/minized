@@ -1,5 +1,5 @@
 --- a/zynq_linux_boot.lds
-+++ b/zynq_linux_boot-new.lds
++++ b/zynq_linux_boot.lds
 @@ -1,16 +1,9 @@
 -
  SECTIONS 
