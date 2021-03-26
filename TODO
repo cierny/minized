@@ -12,12 +12,5 @@ cd /d "D:/Dropbox (MIT)/PhD/Experimentation/BR2/"
 D:/Xilinx/Vitis/2020.2/bin/program_flash -fsbl executable.elf -offset 0x00000 -f boot.bin -flash_type qspi-x4-single
 D:/Xilinx/Vitis/2020.2/bin/program_flash -fsbl executable.elf -offset 0x4a0000 -f rootfs.squashfs -flash_type qspi-x4-single
 
- chosen {
-        bootargs = "console=ttyPS0,115200 earlyprintk clk_ignore_unused root=mtd:jffs2 rw rootfstype=jffs2";
-        stdout-path = "serial0:115200n8";
-    };
-    root=/dev/mtdblock2 rootfstype=jffs2
+ BINARIES_DIR=../output/linux/images/ ../post_img.sh
 
-
-    mtdparts=0:3400956(boot),10403840(rootfs),-(fpga)
-    

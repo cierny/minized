@@ -1,0 +1,37 @@
+--- a/clearreg.c
++++ b/clearreg.c
+@@ -40,12 +40,10 @@
+ 
+ static void Xil_Out32(uint32_t OutAddress, uint32_t Value);
+ static uint32_t Xil_In32(uint32_t Addr);
+-static void debug_puts(const char *ptr);
+ 
+-void _binary_imagefiles_zImage_start(int, int, int);
++void _binary_zImage_minized_start(int, int, int);
+ void clearreg(void)
+ {
+-    debug_puts("Start clearreg\n\r");
+     Xil_Out32(XPSS_SYS_CTRL_BASEADDR + 0x8, SLCR_UNLOCK_MAGIC); //slcr_unlock
+     /* remap DDR to zero, FILTERSTART */
+     Xil_Out32(XPSS_SCU_BASEADDR + 0x40, 0);                     //filter_start
+@@ -64,8 +62,7 @@
+     Xil_Out32(XPSS_SYS_CTRL_BASEADDR + 0x600, 0xC);             //ddr_urgent
+     Xil_Out32(XPSS_SYS_CTRL_BASEADDR + 0x4, SLCR_LOCK_MAGIC);   //slcr_lock
+ 
+-    debug_puts("Jump to linux\n\r");
+-    _binary_imagefiles_zImage_start(0, 0xd32 /* XILINX_EP107 (Zynq) = 3378.*/, 0x1000000 /* address of devicetree data */);
++    _binary_zImage_minized_start(0, 0xd32 /* XILINX_EP107 (Zynq) = 3378.*/, 0x800000 /* address of devicetree data */);
+ }
+ static void Xil_Out32(uint32_t OutAddress, uint32_t Value)
+ {
+@@ -75,10 +72,3 @@
+ {
+     return *(volatile uint32_t *) Addr;
+ }
+-static void debug_puts(const char *ptr)
+-{
+-    while (*ptr) {
+-        while((Xil_In32(STDOUT_BASEADDRESS + XUARTPS_SR_OFFSET) & XUARTPS_SR_TXFULL));
+-        Xil_Out32(STDOUT_BASEADDRESS + XUARTPS_FIFO_OFFSET, *ptr++);
+-    }
+-}

@@ -1,1 +1,2 @@
 source "$BR2_EXTERNAL_MINIZED_PATH/package/murata-wifi/Config.in"
+source "$BR2_EXTERNAL_MINIZED_PATH/package/zynq-boot/Config.in"

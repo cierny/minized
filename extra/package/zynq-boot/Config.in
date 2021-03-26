@@ -1,0 +1,7 @@
+config BR2_PACKAGE_ZYNQ_BOOT
+	bool "zynq-boot"
+	help
+	  A light second stage boot loader (SSBL) for the Zynq SoC
+
+	  https://github.com/cambridgehackers/zynq-boot
+	  

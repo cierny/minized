@@ -6,3 +6,4 @@ config BR2_PACKAGE_MURATA_WIFI
 	  https://github.com/murata-wireless/cyw-fmac-fw
 	  https://github.com/murata-wireless/cyw-fmac-nvram
 	  https://github.com/murata-wireless/cyw-bt-patch
+	  

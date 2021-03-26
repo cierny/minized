@@ -1,0 +1,25 @@
+--- a/zynq_linux_boot.lds
++++ b/zynq_linux_boot-new.lds
+@@ -1,16 +1,9 @@
+-
+ SECTIONS 
+ {
+-         .textr (0x800000): {
+-	     r.tmp(.data);
+-         }
+-         .textd (0x1000000): {
+-	     d.tmp(.data);
+-         }
+-         .textz (0x1008000): {
+-             start:
+-             clearreg.o(.text);
+-             _start_linux:
+-             z.tmp(.data);
+-         }
++    .text (0x800000): {
++        start:
++        clearreg.o(.text);
++        _start_linux:
++        linux.o(.data);
++    }
+ }
