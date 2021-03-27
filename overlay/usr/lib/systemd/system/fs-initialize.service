@@ -20,8 +20,8 @@ p \
  \
  \
 w \
-" | fdisk /dev/mmcblk1; \
-mkfs.ext4 -FFq /dev/mmcblk1p1; \
+" | fdisk /dev/mmcblk0; \
+mkfs.ext4 -FFq /dev/mmcblk0p1; \
 systemctl start mnt.mount; \
 mkdir /mnt/tmp /mnt/overlay; \
 systemctl start root.mount;'

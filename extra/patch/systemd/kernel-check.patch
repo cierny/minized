@@ -1,0 +1,48 @@
+--- a/src/core/namespace.c
++++ b/src/core/namespace.c
+@@ -4,7 +4,9 @@
+ #include <linux/loop.h>
+ #include <sched.h>
+ #include <stdio.h>
++#include <stdlib.h>
+ #include <sys/mount.h>
++#include <sys/utsname.h>
+ #include <unistd.h>
+ #include <linux/fs.h>
+ 
+@@ -861,10 +863,26 @@
+ static int mount_procfs(const MountEntry *m, const NamespaceInfo *ns_info) {
+         const char *entry_path;
+         int r;
++        struct utsname uts;
++        bool old = false;
+ 
+         assert(m);
+         assert(ns_info);
+ 
++        /* If uname says that the system is older than v5.8, then the textual hidepid= stuff is not
++         * supported by the kernel, and thus the per-instance hidepid= neither, which means we
++         * really don't want to use it, since it would affect our host's /proc * mount. Hence let's
++         * gracefully fallback to a classic, unrestricted version. */
++
++        r = uname(&uts);
++        if (r < 0)
++               return r;
++
++        if (strverscmp(uts.release, "5.8") < 0) {
++                log_debug("Pre v5.8 kernel detected [v%s] - skipping hidepid=", uts.release);
++                old = true;
++        }
++
+         entry_path = mount_entry_path(m);
+ 
+         /* Mount a new instance, so that we get the one that matches our user namespace, if we are running in
+@@ -875,7 +893,7 @@
+         (void) mkdir_p_label(entry_path, 0755);
+         (void) umount_recursive(entry_path, 0);
+ 
+-        if (ns_info->protect_proc != PROTECT_PROC_DEFAULT ||
++        if (!old && ns_info->protect_proc != PROTECT_PROC_DEFAULT ||
+             ns_info->proc_subset != PROC_SUBSET_ALL) {
+                 _cleanup_free_ char *opts = NULL;
+ 

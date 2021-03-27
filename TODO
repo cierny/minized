@@ -12,5 +12,4 @@ cd /d "D:/Dropbox (MIT)/PhD/Experimentation/BR2/"
 D:/Xilinx/Vitis/2020.2/bin/program_flash -fsbl executable.elf -offset 0x00000 -f boot.bin -flash_type qspi-x4-single
 D:/Xilinx/Vitis/2020.2/bin/program_flash -fsbl executable.elf -offset 0x4a0000 -f rootfs.squashfs -flash_type qspi-x4-single
 
- BINARIES_DIR=../output/linux/images/ ../post_img.sh
-
+BINARIES_DIR=../output/linux/images/ ../post_img.sh
